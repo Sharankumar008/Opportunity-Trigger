@@ -1,0 +1,4 @@
+trigger CustomerProjectTrigger on Customer_Project__c (After insert) {
+    CustomerProjectTriggerHandler objCustomerProjectTriggerHandler=new CustomerProjectTriggerHandler();
+    objCustomerProjectTriggerHandler.doAction();
+}
