@@ -1,0 +1,40 @@
+public class CustomerProjectTriggerHandler{
+    
+    List<Customer_Project__c> triggerNew;
+    List<Customer_Project__c> triggerOld;
+    Map<Id,Customer_Project__c> triggerNewMap;
+    Map<Id,Customer_Project__c> triggerOldMap;
+    
+    public CustomerProjectTriggerHandler(){
+        triggerNew=(List<Customer_Project__c>)Trigger.new;
+        triggerOld=(List<Customer_Project__c>)Trigger.old;
+        triggerNewMap=(Map<Id,Customer_Project__c>)Trigger.newMap;
+        triggerOldMap=(Map<Id,Customer_Project__c>)Trigger.oldMap;
+    }
+    public void doAction(){
+        Switch on Trigger.operationType{
+            when BEFORE_INSERT{
+                
+            }
+            when AFTER_INSERT{
+                onAfterInsert();
+            } 
+        }
+    }
+    public void onBeforeInsert(){
+        
+    }
+    public void onAfterInsert(){
+        
+        List<Opportunity> oppList=new List<Opportunity>();
+        for(Customer_Project__c cp:TriggerNew){
+            if(cp.Status__c=='Active'){
+                Opportunity oppRecord= new Opportunity(id=cp.Opportunity__c);
+                oppRecord.Customer_Project_ChkBox__c = True;
+                oppList.add(oppRecord);
+            }
+        }
+        update oppList;
+    }
+
+}
